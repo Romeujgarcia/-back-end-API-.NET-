@@ -5,7 +5,7 @@ services:
     container_name: sql_server
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=1@Especierara  # Use uma senha forte adequada
+      - SA_PASSWORD=xxxxxxx  # Use uma senha forte adequada
     ports:
       - "1433:1433"
     volumes:
@@ -19,7 +19,7 @@ services:
     depends_on:
       - sql_server
     environment:
-      - ConnectionStrings__DefaultConnection=Server=tcp:aw0406.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=cloudadmin;Password=1@Especierara;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;  # Substitua por sua senha do Azure
+      - ConnectionStrings__DefaultConnection=Server=tcp:aw0406.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=cloudadmin;Password=xxxxxxxx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;  # Substitua por sua senha do Azure
     ports:
       - "5226:8080"
 
