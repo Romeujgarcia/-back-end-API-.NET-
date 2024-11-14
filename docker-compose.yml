@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  sql_server:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql_server
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=1@Especierara  # Use uma senha forte adequada
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  taskmanagerapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: taskmanagerapi:latest
+    depends_on:
+      - sql_server
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=tcp:aw0406.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=cloudadmin;Password=1@Especierara;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;  # Substitua por sua senha do Azure
+    ports:
+      - "5226:8080"
+
+volumes:
+  sql_data:

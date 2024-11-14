@@ -3,9 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.DataProtection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração do DbContext e Identity
 // Configuração do DbContext e Identity
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -13,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+
+
 
 // Configuração de JWT
 builder.Services.AddAuthentication(options =>
@@ -39,13 +44,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
-        builder.WithOrigins("http://localhost:5231") // URL da sua aplicação Blazor
+        builder.WithOrigins("http://localhost:3000", "http://localhost:31580") // URL da sua aplicação Blazor
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
 });
 
-
+// Configuração do Data Protection
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("/root/.aspnet/DataProtection-Keys")) // Mapeie para um diretório que será persistido
+    .SetApplicationName("TaskManagerAPI");
 
 
 // Adiciona controladores
